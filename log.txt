@@ -1,0 +1,2171 @@
+2021-03-13 13:36:58.075781 : ----------------------------------------------
+2021-03-13 13:36:58.075914 : НАЧАЛО РАБОТЫ
+2021-03-13 13:36:58.075993 : ----------------------------------------------
+2021-03-13 13:36:58.076074 : Копирование входных файлов в архив
+`/home/demipt/PVVL/terminals_02032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_02032021.xlsx.backup'
+`/home/demipt/PVVL/terminals_03032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_03032021.xlsx.backup'
+`/home/demipt/PVVL/terminals_01032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_01032021.xlsx.backup'
+`/home/demipt/PVVL/transactions_01032021.txt' -> `/home/demipt/PVVL/archive/transactions_01032021.txt.backup'
+`/home/demipt/PVVL/passport_blacklist_01032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_01032021.xlsx.backup'
+`/home/demipt/PVVL/passport_blacklist_03032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_03032021.xlsx.backup'
+`/home/demipt/PVVL/transactions_02032021.txt' -> `/home/demipt/PVVL/archive/transactions_02032021.txt.backup'
+`/home/demipt/PVVL/transactions_03032021.txt' -> `/home/demipt/PVVL/archive/transactions_03032021.txt.backup'
+`/home/demipt/PVVL/passport_blacklist_02032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_02032021.xlsx.backup'
+2021-03-13 13:36:58.203095 : Обработка файлов: ['terminals_02032021.xlsx', 'terminals_03032021.xlsx', 'terminals_01032021.xlsx', 'transactions_01032021.txt', 'passport_blacklist_01032021.xlsx', 'passport_blacklist_03032021.xlsx', 'transactions_02032021.txt', 'transactions_03032021.txt', 'passport_blacklist_02032021.xlsx']
+2021-03-13 13:36:59.110797 : --------------Подключение к базе--------------
+2021-03-13 13:37:13.250547 : ------------------------------------------------------------
+2021-03-13 13:37:13.250720 : ------------1 Обработка базы Transactions SCD1--------------
+2021-03-13 13:37:13.255458 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:37:13.295325 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:37:13.932477 : --------------Загрузка данных в стейнджинг Transactions--------------
+2021-03-13 13:37:17.823134 : 
+Execute:
+--------------PROCEED TRANSACTIONS--------------
+--load to DWH
+merge into DEMIPT.PVVL_DWH_FCT_TRANSACTIONS t1 using DEMIPT.PVVL_STG_TRANSACTIONS t2 on (t1.trans_id = t2.trans_id)
+when matched then update set 					
+		    t1.trans_date = t2.trans_date,
+		    t1.card_num = t2.card_num,
+		    t1.oper_type = t2.oper_type,
+		    t1.amt = t2.amt,
+		    t1.oper_result = t2.oper_result,
+		    t1.terminal = t2.terminal,
+		    t1.update_dt = t2.update_dt
+when not matched then insert (trans_id, trans_date, card_num, oper_type, amt, oper_result, terminal, create_dt)
+values(t2.trans_id, t2.trans_date, t2.card_num, t2.oper_type, t2.amt, t2.oper_result, t2.terminal, t2.update_dt)
+2021-03-13 13:37:17.872052 : 
+Execute:
+
+
+-- ------------writwe to meta--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TRANSACTIONS )
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TRANSACTIONS'
+2021-03-13 13:37:17.876830 : 
+Execute:
+
+
+
+commit
+2021-03-13 13:37:17.884663 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:37:17.896687 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:37:18.062190 : --------------Загрузка данных в стейнджинг Transactions--------------
+2021-03-13 13:37:20.923241 : 
+Execute:
+--------------PROCEED TRANSACTIONS--------------
+--load to DWH
+merge into DEMIPT.PVVL_DWH_FCT_TRANSACTIONS t1 using DEMIPT.PVVL_STG_TRANSACTIONS t2 on (t1.trans_id = t2.trans_id)
+when matched then update set 					
+		    t1.trans_date = t2.trans_date,
+		    t1.card_num = t2.card_num,
+		    t1.oper_type = t2.oper_type,
+		    t1.amt = t2.amt,
+		    t1.oper_result = t2.oper_result,
+		    t1.terminal = t2.terminal,
+		    t1.update_dt = t2.update_dt
+when not matched then insert (trans_id, trans_date, card_num, oper_type, amt, oper_result, terminal, create_dt)
+values(t2.trans_id, t2.trans_date, t2.card_num, t2.oper_type, t2.amt, t2.oper_result, t2.terminal, t2.update_dt)
+2021-03-13 13:37:20.970037 : 
+Execute:
+
+
+-- ------------writwe to meta--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TRANSACTIONS )
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TRANSACTIONS'
+2021-03-13 13:37:20.974355 : 
+Execute:
+
+
+
+commit
+2021-03-13 13:37:20.985885 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:37:20.998564 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:37:21.196270 : --------------Загрузка данных в стейнджинг Transactions--------------
+2021-03-13 13:37:24.060105 : 
+Execute:
+--------------PROCEED TRANSACTIONS--------------
+--load to DWH
+merge into DEMIPT.PVVL_DWH_FCT_TRANSACTIONS t1 using DEMIPT.PVVL_STG_TRANSACTIONS t2 on (t1.trans_id = t2.trans_id)
+when matched then update set 					
+		    t1.trans_date = t2.trans_date,
+		    t1.card_num = t2.card_num,
+		    t1.oper_type = t2.oper_type,
+		    t1.amt = t2.amt,
+		    t1.oper_result = t2.oper_result,
+		    t1.terminal = t2.terminal,
+		    t1.update_dt = t2.update_dt
+when not matched then insert (trans_id, trans_date, card_num, oper_type, amt, oper_result, terminal, create_dt)
+values(t2.trans_id, t2.trans_date, t2.card_num, t2.oper_type, t2.amt, t2.oper_result, t2.terminal, t2.update_dt)
+2021-03-13 13:37:24.091653 : 
+Execute:
+
+
+-- ------------writwe to meta--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TRANSACTIONS )
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TRANSACTIONS'
+2021-03-13 13:37:24.094426 : 
+Execute:
+
+
+
+commit
+2021-03-13 13:37:24.108282 : ----------------------------------------------------------------
+2021-03-13 13:37:24.108433 : -----------2 Обработка базы Passport_blacklist SCD1-------------
+2021-03-13 13:37:24.109002 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:37:24.110169 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:37:24.115911 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:37:24.120691 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:37:24.125473 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:37:24.128088 : 
+Execute:
+
+
+commit
+2021-03-13 13:37:24.130725 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:37:24.132389 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:37:24.136506 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:37:24.143356 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:37:24.145211 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:37:24.146189 : 
+Execute:
+
+
+commit
+2021-03-13 13:37:24.148734 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:37:24.149781 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:37:24.154225 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:37:24.162711 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:37:24.166064 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:37:24.167964 : 
+Execute:
+
+
+commit
+2021-03-13 13:37:24.171404 : ------------------------------------------------------------
+2021-03-13 13:37:24.171496 : -----------3 Обработка базы Terminals SCD2--------------
+2021-03-13 13:37:24.172096 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:37:24.173601 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:37:24.182196 : --------------Загрузка данных в стейнджинг Terminals--------------
+2021-03-13 13:37:24.202561 : 
+Execute:
+--------------------------------------------------
+--------------Proceed terminals.sql--------------
+--------------Load from STG to DWH--------------
+
+-- insert new id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t1.terminal_id is null
+2021-03-13 13:37:24.211661 : 
+Execute:
+
+
+
+-- capture id that had been updated
+insert into 
+	DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select	t2.terminal_id
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  1=1 
+	AND t1.terminal_type <> t2.terminal_type
+	AND t1.terminal_city <> t2.terminal_city
+	AND t1.terminal_address <>  t2.terminal_address
+2021-03-13 13:37:24.216065 : 
+Execute:
+
+
+-- close rows that had been updated
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+set
+    t1.terminal_type = (select terminal_type from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_city = (select terminal_city from DEMIPT.PVVL_STG_TERMINALS  t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_address = (select terminal_address from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.effective_to = (select update_dt from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id) - interval '1' second
+ where 1=1
+        AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+        AND t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:37:24.219671 : 
+Execute:
+
+ 				
+-- insert updated id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t2.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:37:24.225799 : 
+Execute:
+
+
+
+--------------Write meta of Terminals--------------
+update PVVL_META_LASTCDC 
+ 	set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TERMINALS)
+ 	where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TERMINALS'
+2021-03-13 13:37:24.228290 : 
+Execute:
+
+
+
+-------------- Deleted rows--------------	
+delete from DEMIPT.PVVL_DEL_TERMINALS
+2021-03-13 13:37:24.230412 : 
+Execute:
+
+-- capture only deleted id
+insert into DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select terminal_id from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST
+where terminal_id in (select t1.terminal_id 
+                from DEMIPT.PVVL_STG_TERMINALS t2 right join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+                on t1.terminal_id = t2.terminal_id
+                where t2.terminal_id is null)
+2021-03-13 13:37:24.237368 : 
+Execute:
+
+
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t1.terminal_id,
+	t1.terminal_type,
+	t1.terminal_city,
+	t1.terminal_address,
+	sysdate,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'Y'
+from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+2021-03-13 13:37:24.240351 : 
+Execute:
+
+
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1 
+set 			
+    --t1.deleted_flg = 'Y',
+    t1.effective_to = sysdate - interval '1' second
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.deleted_flg = 'N'
+2021-03-13 13:37:24.243310 : 
+Execute:
+
+
+
+
+
+commit
+2021-03-13 13:37:24.246156 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:37:24.247420 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:37:24.260242 : --------------Загрузка данных в стейнджинг Terminals--------------
+2021-03-13 13:37:24.283368 : 
+Execute:
+--------------------------------------------------
+--------------Proceed terminals.sql--------------
+--------------Load from STG to DWH--------------
+
+-- insert new id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t1.terminal_id is null
+2021-03-13 13:37:24.285434 : 
+Execute:
+
+
+
+-- capture id that had been updated
+insert into 
+	DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select	t2.terminal_id
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  1=1 
+	AND t1.terminal_type <> t2.terminal_type
+	AND t1.terminal_city <> t2.terminal_city
+	AND t1.terminal_address <>  t2.terminal_address
+2021-03-13 13:37:24.287101 : 
+Execute:
+
+
+-- close rows that had been updated
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+set
+    t1.terminal_type = (select terminal_type from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_city = (select terminal_city from DEMIPT.PVVL_STG_TERMINALS  t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_address = (select terminal_address from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.effective_to = (select update_dt from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id) - interval '1' second
+ where 1=1
+        AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+        AND t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:37:24.288164 : 
+Execute:
+
+ 				
+-- insert updated id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t2.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:37:24.289174 : 
+Execute:
+
+
+
+--------------Write meta of Terminals--------------
+update PVVL_META_LASTCDC 
+ 	set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TERMINALS)
+ 	where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TERMINALS'
+2021-03-13 13:37:24.295963 : 
+Execute:
+
+
+
+-------------- Deleted rows--------------	
+delete from DEMIPT.PVVL_DEL_TERMINALS
+2021-03-13 13:37:24.297733 : 
+Execute:
+
+-- capture only deleted id
+insert into DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select terminal_id from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST
+where terminal_id in (select t1.terminal_id 
+                from DEMIPT.PVVL_STG_TERMINALS t2 right join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+                on t1.terminal_id = t2.terminal_id
+                where t2.terminal_id is null)
+2021-03-13 13:37:24.301384 : 
+Execute:
+
+
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t1.terminal_id,
+	t1.terminal_type,
+	t1.terminal_city,
+	t1.terminal_address,
+	sysdate,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'Y'
+from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+2021-03-13 13:37:24.302640 : 
+Execute:
+
+
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1 
+set 			
+    --t1.deleted_flg = 'Y',
+    t1.effective_to = sysdate - interval '1' second
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.deleted_flg = 'N'
+2021-03-13 13:37:24.305099 : 
+Execute:
+
+
+
+
+
+commit
+2021-03-13 13:37:24.313890 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:37:24.315526 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:37:24.333413 : --------------Загрузка данных в стейнджинг Terminals--------------
+2021-03-13 13:37:24.364925 : 
+Execute:
+--------------------------------------------------
+--------------Proceed terminals.sql--------------
+--------------Load from STG to DWH--------------
+
+-- insert new id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t1.terminal_id is null
+2021-03-13 13:37:24.372519 : 
+Execute:
+
+
+
+-- capture id that had been updated
+insert into 
+	DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select	t2.terminal_id
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  1=1 
+	AND t1.terminal_type <> t2.terminal_type
+	AND t1.terminal_city <> t2.terminal_city
+	AND t1.terminal_address <>  t2.terminal_address
+2021-03-13 13:37:24.378620 : 
+Execute:
+
+
+-- close rows that had been updated
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+set
+    t1.terminal_type = (select terminal_type from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_city = (select terminal_city from DEMIPT.PVVL_STG_TERMINALS  t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_address = (select terminal_address from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.effective_to = (select update_dt from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id) - interval '1' second
+ where 1=1
+        AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+        AND t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:37:24.382754 : 
+Execute:
+
+ 				
+-- insert updated id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t2.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:37:24.384109 : 
+Execute:
+
+
+
+--------------Write meta of Terminals--------------
+update PVVL_META_LASTCDC 
+ 	set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TERMINALS)
+ 	where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TERMINALS'
+2021-03-13 13:37:24.386282 : 
+Execute:
+
+
+
+-------------- Deleted rows--------------	
+delete from DEMIPT.PVVL_DEL_TERMINALS
+2021-03-13 13:37:24.387320 : 
+Execute:
+
+-- capture only deleted id
+insert into DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select terminal_id from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST
+where terminal_id in (select t1.terminal_id 
+                from DEMIPT.PVVL_STG_TERMINALS t2 right join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+                on t1.terminal_id = t2.terminal_id
+                where t2.terminal_id is null)
+2021-03-13 13:37:24.390617 : 
+Execute:
+
+
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t1.terminal_id,
+	t1.terminal_type,
+	t1.terminal_city,
+	t1.terminal_address,
+	sysdate,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'Y'
+from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+2021-03-13 13:37:24.391968 : 
+Execute:
+
+
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1 
+set 			
+    --t1.deleted_flg = 'Y',
+    t1.effective_to = sysdate - interval '1' second
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.deleted_flg = 'N'
+2021-03-13 13:37:24.393643 : 
+Execute:
+
+
+
+
+
+commit
+2021-03-13 13:37:24.398866 : -------------4 Загрузка данных из cхемы BANK--------------
+2021-03-13 13:37:24.399219 : 
+Execute:
+
+--    SCD2
+-- TODO 
+
+--  
+
+-- 1.    STG
+
+delete from DEMIPT.PVVL_STG_CARDS
+2021-03-13 13:37:24.402122 : 
+Execute:
+
+delete from DEMIPT.PVVL_STG_ACCOUNTS
+2021-03-13 13:37:24.404185 : 
+Execute:
+
+delete from DEMIPT.PVVL_STG_CLIENTS
+2021-03-13 13:37:24.406253 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_CARDS
+2021-03-13 13:37:24.408036 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_ACCOUNTS
+2021-03-13 13:37:24.409460 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_CLIENTS
+2021-03-13 13:37:24.410943 : 
+Execute:
+
+
+
+
+-- 2.      STG
+insert into DEMIPT.PVVL_STG_CARDS( CARD_NUM, ACCOUNT, update_dt, create_dt)
+select CARD_NUM, ACCOUNT, update_dt, create_dt
+from BANK.CARDS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:37:24.416785 : 
+Execute:
+
+
+insert into DEMIPT.PVVL_STG_ACCOUNTS(ACCOUNT, VALID_TO, CLIENT, UPDATE_DT, create_dt)
+select ACCOUNT, VALID_TO, CLIENT, UPDATE_DT, create_dt
+from BANK.ACCOUNTS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:37:24.421797 : 
+Execute:
+
+
+insert into DEMIPT.PVVL_STG_CLIENTS(CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, 
+	PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, UPDATE_DT, create_dt)
+select CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, UPDATE_DT, create_dt
+from BANK.CLIENTS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:37:24.426207 : 
+Execute:
+
+
+
+
+
+
+-- 3.    
+
+insert into DEMIPT.PVVL_DWH_DIM_CARDS_HIST(CARD_NUM, ACCOUNT, effective_from, effective_to, deleted_flg )
+select
+	CARD_NUM, ACCOUNT, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_CARDS
+2021-03-13 13:37:24.435051 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_CARDS_HIST t1
+using DEMIPT.PVVL_STG_CARDS t2
+on ( t1.CARD_NUM = t2.CARD_NUM and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:37:24.441380 : 
+Execute:
+
+
+
+insert into DEMIPT.PVVL_DWH_DIM_ACCOUNTS_HIST(ACCOUNT, VALID_TO, CLIENT, effective_from, effective_to, deleted_flg )
+select
+	ACCOUNT, VALID_TO, CLIENT, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_ACCOUNTS
+2021-03-13 13:37:24.444307 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_ACCOUNTS_HIST t1
+using DEMIPT.PVVL_STG_ACCOUNTS t2
+on ( t1.ACCOUNT = t2.ACCOUNT and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:37:24.448131 : 
+Execute:
+
+
+
+
+insert into DEMIPT.PVVL_DWH_DIM_CLIENTS_HIST (CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, effective_from, effective_to, deleted_flg )
+select
+	CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_CLIENTS
+2021-03-13 13:37:24.451701 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_CLIENTS_HIST t1
+using DEMIPT.PVVL_STG_CLIENTS t2
+on ( t1.CLIENT_ID = t2.CLIENT_ID and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:37:24.460844 : 
+Execute:
+
+
+
+
+
+
+-- 4.      ()
+-- insert into stg1_del( id )
+-- select id from source1
+
+-- 5.       ()
+
+-- ???????
+
+-- 6.   -   
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_CARDS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS'
+2021-03-13 13:37:24.472760 : 
+Execute:
+
+
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_ACCOUNTS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS'
+2021-03-13 13:37:24.484502 : 
+Execute:
+
+
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_CLIENTS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS'
+2021-03-13 13:37:24.490344 : 
+Execute:
+
+
+-- 7.  
+commit
+2021-03-13 13:37:24.496880 : -------------5 Построение отчета о мошшениках--------------
+2021-03-13 13:37:24.497560 : 
+Execute:
+
+-- 1.       .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+--    to_char(trans_date, 'YYYY.MM.DD HH24:MI:SS' ),
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '1' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_date > cl.passport_valid_to
+OR cl.PASSPORT_NUM in (select PASSPORT_NUM from DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST)
+2021-03-13 13:37:24.615191 : 
+Execute:
+
+
+
+--2.     .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '2' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_date > ac.VALID_TO
+2021-03-13 13:37:24.639440 : 
+Execute:
+
+
+
+--3.         .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '3' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_id in (
+    SELECT trans_id 
+    FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS  tr1 
+    INNER JOIN pvvl_dwh_dim_terminals_hist te1
+        ON te1.terminal_id = tr1.terminal AND tr1.trans_date between te1.effective_from AND te1.effective_to
+    INNER JOIN DEMIPT.PVVL_DWH_FCT_TRANSACTIONS  tr2
+        ON tr1.card_num = tr2.card_num AND ABS(tr1.trans_date - tr2.trans_date)*24 < 1
+     INNER JOIN pvvl_dwh_dim_terminals_hist te2
+        ON te2.terminal_id = tr2.terminal AND tr2.trans_date between te2.effective_from AND te2.effective_to
+    WHERE te1.terminal_city <> te2.terminal_city
+)
+2021-03-13 13:38:33.049436 : ----------------------------------------------
+2021-03-13 13:38:33.049575 : НАЧАЛО РАБОТЫ
+2021-03-13 13:38:33.049666 : ----------------------------------------------
+2021-03-13 13:38:33.049741 : Копирование входных файлов в архив
+`/home/demipt/PVVL/terminals_02032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_02032021.xlsx.backup'
+`/home/demipt/PVVL/terminals_03032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_03032021.xlsx.backup'
+`/home/demipt/PVVL/terminals_01032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_01032021.xlsx.backup'
+`/home/demipt/PVVL/transactions_01032021.txt' -> `/home/demipt/PVVL/archive/transactions_01032021.txt.backup'
+`/home/demipt/PVVL/passport_blacklist_01032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_01032021.xlsx.backup'
+`/home/demipt/PVVL/passport_blacklist_03032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_03032021.xlsx.backup'
+`/home/demipt/PVVL/transactions_02032021.txt' -> `/home/demipt/PVVL/archive/transactions_02032021.txt.backup'
+`/home/demipt/PVVL/transactions_03032021.txt' -> `/home/demipt/PVVL/archive/transactions_03032021.txt.backup'
+`/home/demipt/PVVL/passport_blacklist_02032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_02032021.xlsx.backup'
+2021-03-13 13:38:33.111653 : Обработка файлов: ['terminals_02032021.xlsx', 'terminals_03032021.xlsx', 'terminals_01032021.xlsx', 'transactions_01032021.txt', 'passport_blacklist_01032021.xlsx', 'passport_blacklist_03032021.xlsx', 'transactions_02032021.txt', 'transactions_03032021.txt', 'passport_blacklist_02032021.xlsx']
+2021-03-13 13:38:34.018015 : --------------Подключение к базе--------------
+2021-03-13 13:38:40.153953 : ------------------------------------------------------------
+2021-03-13 13:38:40.154128 : ------------1 Обработка базы Transactions SCD1--------------
+2021-03-13 13:38:40.158467 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:38:40.180569 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:38:40.683593 : CRITICAL ERROR: повторный ввод данных
+2021-03-13 13:38:40.683740 : Дата в файле: 2021-03-01 00:00:00
+2021-03-13 13:38:40.683802 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.683874 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:38:40.692204 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:38:40.699176 : CRITICAL ERROR: повторный ввод данных
+2021-03-13 13:38:40.699289 : Дата в файле: 2021-03-02 00:00:00
+2021-03-13 13:38:40.699354 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.699407 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:38:40.707007 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:38:40.711747 : CRITICAL ERROR: повторный ввод данных
+2021-03-13 13:38:40.711858 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.711930 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.712005 : ----------------------------------------------------------------
+2021-03-13 13:38:40.712105 : -----------2 Обработка базы Passport_blacklist SCD1-------------
+2021-03-13 13:38:40.712645 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:38:40.714147 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:38:40.722884 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:38:40.731300 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:38:40.733852 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:38:40.735432 : 
+Execute:
+
+
+commit
+2021-03-13 13:38:40.740052 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:38:40.741855 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:38:40.746369 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:38:40.762266 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:38:40.764804 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:38:40.766074 : 
+Execute:
+
+
+commit
+2021-03-13 13:38:40.768450 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:38:40.769944 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:38:40.774568 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:38:40.780254 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:38:40.782008 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:38:40.782947 : 
+Execute:
+
+
+commit
+2021-03-13 13:38:40.785170 : ------------------------------------------------------------
+2021-03-13 13:38:40.785303 : -----------3 Обработка базы Terminals SCD2--------------
+2021-03-13 13:38:40.785940 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:38:40.787144 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:38:40.794085 : CRITICAL ERROR: повторный ввод данных
+2021-03-13 13:38:40.794234 : Дата в файле: 2021-03-01 00:00:00
+2021-03-13 13:38:40.794310 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.794372 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:38:40.797106 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:38:40.803574 : CRITICAL ERROR: повторный ввод данных
+2021-03-13 13:38:40.803732 : Дата в файле: 2021-03-02 00:00:00
+2021-03-13 13:38:40.803820 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.803907 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:38:40.805439 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:38:40.810037 : CRITICAL ERROR: повторный ввод данных
+2021-03-13 13:38:40.810199 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.810288 : Дата в файле: 2021-03-03 00:00:00
+2021-03-13 13:38:40.810366 : -------------4 Загрузка данных из cхемы BANK--------------
+2021-03-13 13:38:40.810590 : 
+Execute:
+
+--    SCD2
+-- TODO 
+
+--  
+
+-- 1.    STG
+
+delete from DEMIPT.PVVL_STG_CARDS
+2021-03-13 13:38:40.814493 : 
+Execute:
+
+delete from DEMIPT.PVVL_STG_ACCOUNTS
+2021-03-13 13:38:40.816640 : 
+Execute:
+
+delete from DEMIPT.PVVL_STG_CLIENTS
+2021-03-13 13:38:40.818724 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_CARDS
+2021-03-13 13:38:40.819729 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_ACCOUNTS
+2021-03-13 13:38:40.820752 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_CLIENTS
+2021-03-13 13:38:40.821860 : 
+Execute:
+
+
+
+
+-- 2.      STG
+insert into DEMIPT.PVVL_STG_CARDS( CARD_NUM, ACCOUNT, update_dt, create_dt)
+select CARD_NUM, ACCOUNT, update_dt, create_dt
+from BANK.CARDS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:38:40.823459 : 
+Execute:
+
+
+insert into DEMIPT.PVVL_STG_ACCOUNTS(ACCOUNT, VALID_TO, CLIENT, UPDATE_DT, create_dt)
+select ACCOUNT, VALID_TO, CLIENT, UPDATE_DT, create_dt
+from BANK.ACCOUNTS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:38:40.824974 : 
+Execute:
+
+
+insert into DEMIPT.PVVL_STG_CLIENTS(CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, 
+	PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, UPDATE_DT, create_dt)
+select CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, UPDATE_DT, create_dt
+from BANK.CLIENTS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:38:40.826517 : 
+Execute:
+
+
+
+
+
+
+-- 3.    
+
+insert into DEMIPT.PVVL_DWH_DIM_CARDS_HIST(CARD_NUM, ACCOUNT, effective_from, effective_to, deleted_flg )
+select
+	CARD_NUM, ACCOUNT, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_CARDS
+2021-03-13 13:38:40.828012 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_CARDS_HIST t1
+using DEMIPT.PVVL_STG_CARDS t2
+on ( t1.CARD_NUM = t2.CARD_NUM and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:38:40.831053 : 
+Execute:
+
+
+
+insert into DEMIPT.PVVL_DWH_DIM_ACCOUNTS_HIST(ACCOUNT, VALID_TO, CLIENT, effective_from, effective_to, deleted_flg )
+select
+	ACCOUNT, VALID_TO, CLIENT, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_ACCOUNTS
+2021-03-13 13:38:40.832851 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_ACCOUNTS_HIST t1
+using DEMIPT.PVVL_STG_ACCOUNTS t2
+on ( t1.ACCOUNT = t2.ACCOUNT and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:38:40.834186 : 
+Execute:
+
+
+
+
+insert into DEMIPT.PVVL_DWH_DIM_CLIENTS_HIST (CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, effective_from, effective_to, deleted_flg )
+select
+	CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_CLIENTS
+2021-03-13 13:38:40.835433 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_CLIENTS_HIST t1
+using DEMIPT.PVVL_STG_CLIENTS t2
+on ( t1.CLIENT_ID = t2.CLIENT_ID and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:38:40.836815 : 
+Execute:
+
+
+
+
+
+
+-- 4.      ()
+-- insert into stg1_del( id )
+-- select id from source1
+
+-- 5.       ()
+
+-- ???????
+
+-- 6.   -   
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_CARDS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS'
+2021-03-13 13:38:40.837897 : 
+Execute:
+
+
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_ACCOUNTS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS'
+2021-03-13 13:38:40.839320 : 
+Execute:
+
+
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_CLIENTS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS'
+2021-03-13 13:38:40.840353 : 
+Execute:
+
+
+-- 7.  
+commit
+2021-03-13 13:38:40.848373 : -------------5 Построение отчета о мошшениках--------------
+2021-03-13 13:38:40.849010 : 
+Execute:
+
+-- 1.       .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+--    to_char(trans_date, 'YYYY.MM.DD HH24:MI:SS' ),
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '1' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_date > cl.passport_valid_to
+OR cl.PASSPORT_NUM in (select PASSPORT_NUM from DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST)
+2021-03-13 13:38:41.235236 : 
+Execute:
+
+
+
+--2.     .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '2' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_date > ac.VALID_TO
+2021-03-13 13:38:41.293569 : 
+Execute:
+
+
+
+--3.         .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '3' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_id in (
+    SELECT tr1.trans_id 
+    FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS  tr1 
+    INNER JOIN pvvl_dwh_dim_terminals_hist te1
+        ON te1.terminal_id = tr1.terminal AND tr1.trans_date between te1.effective_from AND te1.effective_to
+    INNER JOIN DEMIPT.PVVL_DWH_FCT_TRANSACTIONS  tr2
+        ON tr1.card_num = tr2.card_num AND ABS(tr1.trans_date - tr2.trans_date)*24 < 1
+     INNER JOIN pvvl_dwh_dim_terminals_hist te2
+        ON te2.terminal_id = tr2.terminal AND tr2.trans_date between te2.effective_from AND te2.effective_to
+    WHERE te1.terminal_city <> te2.terminal_city
+)
+2021-03-13 13:38:53.614374 : 
+Execute:
+
+
+
+
+
+
+--4.   .   20    3 
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '4' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_id in (
+	SELECT t4 FROM    
+        (
+        SELECT 
+            oper_result r1,
+            lead(oper_result) over(PARTITION BY card_num ORDER BY trans_date) r2,
+            lead(oper_result,2) over(PARTITION BY card_num ORDER BY trans_date) r3,
+            lead(oper_result,3) over(PARTITION BY card_num ORDER BY trans_date) r4,
+            lead(trans_id,3) over(PARTITION BY card_num ORDER BY trans_date) t4,
+            trans_date d1,
+            lead(trans_date,3) over(PARTITION BY card_num ORDER BY trans_date) d4
+        FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS
+        ) t
+	WHERE 1=1
+	    AND R1 = 'REJECT'
+	    AND R2 = 'REJECT'
+	    AND R3 = 'REJECT'
+	    AND R4 = 'SUCCESS'
+	    AND ABS(D4-D1)*24*60 < 20
+
+ )
+2021-03-13 13:38:53.876689 : --------------Закрытие соединения--------------
+2021-03-13 13:41:42.241831 : ----------------------------------------------
+2021-03-13 13:41:42.241973 : НАЧАЛО РАБОТЫ
+2021-03-13 13:41:42.242066 : ----------------------------------------------
+2021-03-13 13:41:42.242190 : Копирование входных файлов в архив
+`/home/demipt/PVVL/terminals_02032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_02032021.xlsx.backup'
+`/home/demipt/PVVL/terminals_03032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_03032021.xlsx.backup'
+`/home/demipt/PVVL/terminals_01032021.xlsx' -> `/home/demipt/PVVL/archive/terminals_01032021.xlsx.backup'
+`/home/demipt/PVVL/transactions_01032021.txt' -> `/home/demipt/PVVL/archive/transactions_01032021.txt.backup'
+`/home/demipt/PVVL/passport_blacklist_01032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_01032021.xlsx.backup'
+`/home/demipt/PVVL/passport_blacklist_03032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_03032021.xlsx.backup'
+`/home/demipt/PVVL/transactions_02032021.txt' -> `/home/demipt/PVVL/archive/transactions_02032021.txt.backup'
+`/home/demipt/PVVL/transactions_03032021.txt' -> `/home/demipt/PVVL/archive/transactions_03032021.txt.backup'
+`/home/demipt/PVVL/passport_blacklist_02032021.xlsx' -> `/home/demipt/PVVL/archive/passport_blacklist_02032021.xlsx.backup'
+2021-03-13 13:41:42.522958 : Обработка файлов: ['terminals_02032021.xlsx', 'terminals_03032021.xlsx', 'terminals_01032021.xlsx', 'transactions_01032021.txt', 'passport_blacklist_01032021.xlsx', 'passport_blacklist_03032021.xlsx', 'transactions_02032021.txt', 'transactions_03032021.txt', 'passport_blacklist_02032021.xlsx']
+2021-03-13 13:41:43.655502 : --------------Подключение к базе--------------
+2021-03-13 13:41:55.174405 : ------------------------------------------------------------
+2021-03-13 13:41:55.174593 : ------------1 Обработка базы Transactions SCD1--------------
+2021-03-13 13:41:55.199694 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:41:55.221941 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:41:55.681576 : --------------Загрузка данных в стейнджинг Transactions--------------
+2021-03-13 13:41:58.646425 : 
+Execute:
+--------------PROCEED TRANSACTIONS--------------
+--load to DWH
+merge into DEMIPT.PVVL_DWH_FCT_TRANSACTIONS t1 using DEMIPT.PVVL_STG_TRANSACTIONS t2 on (t1.trans_id = t2.trans_id)
+when matched then update set 					
+		    t1.trans_date = t2.trans_date,
+		    t1.card_num = t2.card_num,
+		    t1.oper_type = t2.oper_type,
+		    t1.amt = t2.amt,
+		    t1.oper_result = t2.oper_result,
+		    t1.terminal = t2.terminal,
+		    t1.update_dt = t2.update_dt
+when not matched then insert (trans_id, trans_date, card_num, oper_type, amt, oper_result, terminal, create_dt)
+values(t2.trans_id, t2.trans_date, t2.card_num, t2.oper_type, t2.amt, t2.oper_result, t2.terminal, t2.update_dt)
+2021-03-13 13:41:58.691417 : 
+Execute:
+
+
+-- ------------writwe to meta--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TRANSACTIONS )
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TRANSACTIONS'
+2021-03-13 13:41:58.696367 : 
+Execute:
+
+
+
+commit
+2021-03-13 13:41:58.723847 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:41:58.736335 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:41:58.987773 : --------------Загрузка данных в стейнджинг Transactions--------------
+2021-03-13 13:42:02.231806 : 
+Execute:
+--------------PROCEED TRANSACTIONS--------------
+--load to DWH
+merge into DEMIPT.PVVL_DWH_FCT_TRANSACTIONS t1 using DEMIPT.PVVL_STG_TRANSACTIONS t2 on (t1.trans_id = t2.trans_id)
+when matched then update set 					
+		    t1.trans_date = t2.trans_date,
+		    t1.card_num = t2.card_num,
+		    t1.oper_type = t2.oper_type,
+		    t1.amt = t2.amt,
+		    t1.oper_result = t2.oper_result,
+		    t1.terminal = t2.terminal,
+		    t1.update_dt = t2.update_dt
+when not matched then insert (trans_id, trans_date, card_num, oper_type, amt, oper_result, terminal, create_dt)
+values(t2.trans_id, t2.trans_date, t2.card_num, t2.oper_type, t2.amt, t2.oper_result, t2.terminal, t2.update_dt)
+2021-03-13 13:42:02.283199 : 
+Execute:
+
+
+-- ------------writwe to meta--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TRANSACTIONS )
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TRANSACTIONS'
+2021-03-13 13:42:02.286992 : 
+Execute:
+
+
+
+commit
+2021-03-13 13:42:02.293929 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:42:02.304797 : --------------Очистка стейнджинга Transactions--------------
+2021-03-13 13:42:02.504931 : --------------Загрузка данных в стейнджинг Transactions--------------
+2021-03-13 13:42:05.480287 : 
+Execute:
+--------------PROCEED TRANSACTIONS--------------
+--load to DWH
+merge into DEMIPT.PVVL_DWH_FCT_TRANSACTIONS t1 using DEMIPT.PVVL_STG_TRANSACTIONS t2 on (t1.trans_id = t2.trans_id)
+when matched then update set 					
+		    t1.trans_date = t2.trans_date,
+		    t1.card_num = t2.card_num,
+		    t1.oper_type = t2.oper_type,
+		    t1.amt = t2.amt,
+		    t1.oper_result = t2.oper_result,
+		    t1.terminal = t2.terminal,
+		    t1.update_dt = t2.update_dt
+when not matched then insert (trans_id, trans_date, card_num, oper_type, amt, oper_result, terminal, create_dt)
+values(t2.trans_id, t2.trans_date, t2.card_num, t2.oper_type, t2.amt, t2.oper_result, t2.terminal, t2.update_dt)
+2021-03-13 13:42:05.525220 : 
+Execute:
+
+
+-- ------------writwe to meta--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TRANSACTIONS )
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TRANSACTIONS'
+2021-03-13 13:42:05.530244 : 
+Execute:
+
+
+
+commit
+2021-03-13 13:42:05.551921 : ----------------------------------------------------------------
+2021-03-13 13:42:05.552110 : -----------2 Обработка базы Passport_blacklist SCD1-------------
+2021-03-13 13:42:05.552884 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:42:05.554635 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:42:05.574994 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:42:05.599368 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:42:05.601731 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:42:05.603831 : 
+Execute:
+
+
+commit
+2021-03-13 13:42:05.609242 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:42:05.610850 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:42:05.617029 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:42:05.627572 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:42:05.629720 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:42:05.632032 : 
+Execute:
+
+
+commit
+2021-03-13 13:42:05.636081 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:42:05.637717 : --------------Очистка стейнджинга Passport_blacklist--------------
+2021-03-13 13:42:05.645416 : --------------Загрузка данных в стейнджинг Passport_blacklist--------------
+2021-03-13 13:42:05.654625 : 
+Execute:
+--------------PROCEED PASPORTS--------------
+
+
+
+-- insert into dwh
+merge into DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST t1 using DEMIPT.PVVL_STG_PASSPORT_BLACKLIST t2 on (t1.PASSPORT_NUM = t2.PASSPORT_NUM)
+when matched then update set 					
+t1.UPDATE_DT = t2.UPDATE_DT
+when not matched then insert (PASSPORT_NUM, ENTRY_DT, create_dt)
+values(t2.PASSPORT_NUM, t2.ENTRY_DT,t2.UPDATE_DT)
+2021-03-13 13:42:05.657014 : 
+Execute:
+
+
+-- ------------   passports--------------
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_PASSPORT_BLACKLIST)
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_PASSPORT_BLACKLIST'
+2021-03-13 13:42:05.658614 : 
+Execute:
+
+
+commit
+2021-03-13 13:42:05.667739 : ------------------------------------------------------------
+2021-03-13 13:42:05.667903 : -----------3 Обработка базы Terminals SCD2--------------
+2021-03-13 13:42:05.668668 : Обработка за дату: 2021-03-01 00:00:00
+2021-03-13 13:42:05.670529 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:42:05.676714 : --------------Загрузка данных в стейнджинг Terminals--------------
+2021-03-13 13:42:05.703466 : 
+Execute:
+--------------------------------------------------
+--------------Proceed terminals.sql--------------
+--------------Load from STG to DWH--------------
+
+-- insert new id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t1.terminal_id is null
+2021-03-13 13:42:05.706108 : 
+Execute:
+
+
+
+-- capture id that had been updated
+insert into 
+	DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select	t2.terminal_id
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  1=1 
+	AND t1.terminal_type <> t2.terminal_type
+	AND t1.terminal_city <> t2.terminal_city
+	AND t1.terminal_address <>  t2.terminal_address
+2021-03-13 13:42:05.708960 : 
+Execute:
+
+
+-- close rows that had been updated
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+set
+    t1.terminal_type = (select terminal_type from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_city = (select terminal_city from DEMIPT.PVVL_STG_TERMINALS  t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_address = (select terminal_address from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.effective_to = (select update_dt from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id) - interval '1' second
+ where 1=1
+        AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+        AND t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:42:05.710746 : 
+Execute:
+
+ 				
+-- insert updated id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t2.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:42:05.712206 : 
+Execute:
+
+
+
+--------------Write meta of Terminals--------------
+update PVVL_META_LASTCDC 
+ 	set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TERMINALS)
+ 	where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TERMINALS'
+2021-03-13 13:42:05.713723 : 
+Execute:
+
+
+
+-------------- Deleted rows--------------	
+delete from DEMIPT.PVVL_DEL_TERMINALS
+2021-03-13 13:42:05.720701 : 
+Execute:
+
+-- capture only deleted id
+insert into DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select terminal_id from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST
+where terminal_id in (select t1.terminal_id 
+                from DEMIPT.PVVL_STG_TERMINALS t2 right join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+                on t1.terminal_id = t2.terminal_id
+                where t2.terminal_id is null)
+2021-03-13 13:42:05.728522 : 
+Execute:
+
+
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t1.terminal_id,
+	t1.terminal_type,
+	t1.terminal_city,
+	t1.terminal_address,
+	sysdate,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'Y'
+from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+2021-03-13 13:42:05.733860 : 
+Execute:
+
+
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1 
+set 			
+    --t1.deleted_flg = 'Y',
+    t1.effective_to = sysdate - interval '1' second
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.deleted_flg = 'N'
+2021-03-13 13:42:05.736882 : 
+Execute:
+
+
+
+
+
+commit
+2021-03-13 13:42:05.741223 : Обработка за дату: 2021-03-02 00:00:00
+2021-03-13 13:42:05.742986 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:42:05.761784 : --------------Загрузка данных в стейнджинг Terminals--------------
+2021-03-13 13:42:05.791657 : 
+Execute:
+--------------------------------------------------
+--------------Proceed terminals.sql--------------
+--------------Load from STG to DWH--------------
+
+-- insert new id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t1.terminal_id is null
+2021-03-13 13:42:05.795339 : 
+Execute:
+
+
+
+-- capture id that had been updated
+insert into 
+	DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select	t2.terminal_id
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  1=1 
+	AND t1.terminal_type <> t2.terminal_type
+	AND t1.terminal_city <> t2.terminal_city
+	AND t1.terminal_address <>  t2.terminal_address
+2021-03-13 13:42:05.805593 : 
+Execute:
+
+
+-- close rows that had been updated
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+set
+    t1.terminal_type = (select terminal_type from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_city = (select terminal_city from DEMIPT.PVVL_STG_TERMINALS  t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_address = (select terminal_address from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.effective_to = (select update_dt from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id) - interval '1' second
+ where 1=1
+        AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+        AND t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:42:05.807888 : 
+Execute:
+
+ 				
+-- insert updated id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t2.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:42:05.809612 : 
+Execute:
+
+
+
+--------------Write meta of Terminals--------------
+update PVVL_META_LASTCDC 
+ 	set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TERMINALS)
+ 	where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TERMINALS'
+2021-03-13 13:42:05.810875 : 
+Execute:
+
+
+
+-------------- Deleted rows--------------	
+delete from DEMIPT.PVVL_DEL_TERMINALS
+2021-03-13 13:42:05.812061 : 
+Execute:
+
+-- capture only deleted id
+insert into DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select terminal_id from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST
+where terminal_id in (select t1.terminal_id 
+                from DEMIPT.PVVL_STG_TERMINALS t2 right join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+                on t1.terminal_id = t2.terminal_id
+                where t2.terminal_id is null)
+2021-03-13 13:42:05.816706 : 
+Execute:
+
+
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t1.terminal_id,
+	t1.terminal_type,
+	t1.terminal_city,
+	t1.terminal_address,
+	sysdate,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'Y'
+from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+2021-03-13 13:42:05.818335 : 
+Execute:
+
+
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1 
+set 			
+    --t1.deleted_flg = 'Y',
+    t1.effective_to = sysdate - interval '1' second
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.deleted_flg = 'N'
+2021-03-13 13:42:05.820140 : 
+Execute:
+
+
+
+
+
+commit
+2021-03-13 13:42:05.825969 : Обработка за дату: 2021-03-03 00:00:00
+2021-03-13 13:42:05.827658 : --------------Очистка стейнджинга Terminals--------------
+2021-03-13 13:42:05.840999 : --------------Загрузка данных в стейнджинг Terminals--------------
+2021-03-13 13:42:05.862491 : 
+Execute:
+--------------------------------------------------
+--------------Proceed terminals.sql--------------
+--------------Load from STG to DWH--------------
+
+-- insert new id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t1.terminal_id is null
+2021-03-13 13:42:05.867281 : 
+Execute:
+
+
+
+-- capture id that had been updated
+insert into 
+	DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select	t2.terminal_id
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  1=1 
+	AND t1.terminal_type <> t2.terminal_type
+	AND t1.terminal_city <> t2.terminal_city
+	AND t1.terminal_address <>  t2.terminal_address
+2021-03-13 13:42:05.869584 : 
+Execute:
+
+
+-- close rows that had been updated
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+set
+    t1.terminal_type = (select terminal_type from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_city = (select terminal_city from DEMIPT.PVVL_STG_TERMINALS  t2 where t1.terminal_id = t2.terminal_id),
+    t1.terminal_address = (select terminal_address from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id),
+    t1.effective_to = (select update_dt from DEMIPT.PVVL_STG_TERMINALS t2 where t1.terminal_id = t2.terminal_id) - interval '1' second
+ where 1=1
+        AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+        AND t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:42:05.871025 : 
+Execute:
+
+ 				
+-- insert updated id
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t2.terminal_id,
+	t2.terminal_type,
+	t2.terminal_city,
+	t2.terminal_address,
+	t2.update_dt,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_TERMINALS t2 left join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+on t1.terminal_id = t2.terminal_id
+where  t2.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+2021-03-13 13:42:05.872457 : 
+Execute:
+
+
+
+--------------Write meta of Terminals--------------
+update PVVL_META_LASTCDC 
+ 	set last_update = (select max(update_dt) from DEMIPT.PVVL_STG_TERMINALS)
+ 	where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_TERMINALS'
+2021-03-13 13:42:05.873704 : 
+Execute:
+
+
+
+-------------- Deleted rows--------------	
+delete from DEMIPT.PVVL_DEL_TERMINALS
+2021-03-13 13:42:05.874659 : 
+Execute:
+
+-- capture only deleted id
+insert into DEMIPT.PVVL_DEL_TERMINALS(terminal_id)
+select terminal_id from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST
+where terminal_id in (select t1.terminal_id 
+                from DEMIPT.PVVL_STG_TERMINALS t2 right join DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+                on t1.terminal_id = t2.terminal_id
+                where t2.terminal_id is null)
+2021-03-13 13:42:05.878411 : 
+Execute:
+
+
+insert into 
+	DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST(terminal_id, terminal_type, terminal_city, terminal_address, effective_from, effective_to, deleted_flg )
+select	
+	t1.terminal_id,
+	t1.terminal_type,
+	t1.terminal_city,
+	t1.terminal_address,
+	sysdate,
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'Y'
+from DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD')
+2021-03-13 13:42:05.879902 : 
+Execute:
+
+
+update DEMIPT.PVVL_DWH_DIM_TERMINALS_HIST t1 
+set 			
+    --t1.deleted_flg = 'Y',
+    t1.effective_to = sysdate - interval '1' second
+where  t1.terminal_id IN (select terminal_id FROM DEMIPT.PVVL_DEL_TERMINALS)
+AND t1.deleted_flg = 'N'
+2021-03-13 13:42:05.881455 : 
+Execute:
+
+
+
+
+
+commit
+2021-03-13 13:42:05.895666 : -------------4 Загрузка данных из cхемы BANK--------------
+2021-03-13 13:42:05.896011 : 
+Execute:
+
+--    SCD2
+-- TODO 
+
+--  
+
+-- 1.    STG
+
+delete from DEMIPT.PVVL_STG_CARDS
+2021-03-13 13:42:05.898043 : 
+Execute:
+
+delete from DEMIPT.PVVL_STG_ACCOUNTS
+2021-03-13 13:42:05.901582 : 
+Execute:
+
+delete from DEMIPT.PVVL_STG_CLIENTS
+2021-03-13 13:42:05.902973 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_CARDS
+2021-03-13 13:42:05.905795 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_ACCOUNTS
+2021-03-13 13:42:05.906992 : 
+Execute:
+
+delete from DEMIPT.PVVL_DEL_CLIENTS
+2021-03-13 13:42:05.908309 : 
+Execute:
+
+
+
+
+-- 2.      STG
+insert into DEMIPT.PVVL_STG_CARDS( CARD_NUM, ACCOUNT, update_dt, create_dt)
+select CARD_NUM, ACCOUNT, update_dt, create_dt
+from BANK.CARDS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:42:05.915730 : 
+Execute:
+
+
+insert into DEMIPT.PVVL_STG_ACCOUNTS(ACCOUNT, VALID_TO, CLIENT, UPDATE_DT, create_dt)
+select ACCOUNT, VALID_TO, CLIENT, UPDATE_DT, create_dt
+from BANK.ACCOUNTS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:42:05.918025 : 
+Execute:
+
+
+insert into DEMIPT.PVVL_STG_CLIENTS(CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, 
+	PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, UPDATE_DT, create_dt)
+select CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, UPDATE_DT, create_dt
+from BANK.CLIENTS
+where coalesce( update_dt, create_dt ) > (
+	select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS'
+) OR (select last_update from DEMIPT.PVVL_META_LASTCDC where dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS')
+	 =  to_date('01.01.1900', 'DD.MM.YYYY')
+2021-03-13 13:42:05.919922 : 
+Execute:
+
+
+
+
+
+
+-- 3.    
+
+insert into DEMIPT.PVVL_DWH_DIM_CARDS_HIST(CARD_NUM, ACCOUNT, effective_from, effective_to, deleted_flg )
+select
+	CARD_NUM, ACCOUNT, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_CARDS
+2021-03-13 13:42:05.921643 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_CARDS_HIST t1
+using DEMIPT.PVVL_STG_CARDS t2
+on ( t1.CARD_NUM = t2.CARD_NUM and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:42:05.923361 : 
+Execute:
+
+
+
+insert into DEMIPT.PVVL_DWH_DIM_ACCOUNTS_HIST(ACCOUNT, VALID_TO, CLIENT, effective_from, effective_to, deleted_flg )
+select
+	ACCOUNT, VALID_TO, CLIENT, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_ACCOUNTS
+2021-03-13 13:42:05.924762 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_ACCOUNTS_HIST t1
+using DEMIPT.PVVL_STG_ACCOUNTS t2
+on ( t1.ACCOUNT = t2.ACCOUNT and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:42:05.926418 : 
+Execute:
+
+
+
+
+insert into DEMIPT.PVVL_DWH_DIM_CLIENTS_HIST (CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, effective_from, effective_to, deleted_flg )
+select
+	CLIENT_ID, LAST_NAME, FIRST_NAME, PATRONYMIC, DATE_OF_BIRTH, PASSPORT_NUM, PASSPORT_VALID_TO, PHONE, coalesce( update_dt, create_dt ),
+	to_date( '2999-12-31', 'YYYY-MM-DD' ),
+	'N'
+from DEMIPT.PVVL_STG_CLIENTS
+2021-03-13 13:42:05.935648 : 
+Execute:
+
+merge into DEMIPT.PVVL_DWH_DIM_CLIENTS_HIST t1
+using DEMIPT.PVVL_STG_CLIENTS t2
+on ( t1.CLIENT_ID = t2.CLIENT_ID and t1.effective_from < coalesce(t2.update_dt, t2.create_dt ) )
+when matched then update set 
+    t1.effective_to = t2.update_dt - interval '1' second
+	where t1.effective_to = to_date( '2999-12-31', 'YYYY-MM-DD' )
+2021-03-13 13:42:05.940632 : 
+Execute:
+
+
+
+
+
+
+-- 4.      ()
+-- insert into stg1_del( id )
+-- select id from source1
+
+-- 5.       ()
+
+-- ???????
+
+-- 6.   -   
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_CARDS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_CARDS'
+2021-03-13 13:42:05.947549 : 
+Execute:
+
+
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_ACCOUNTS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_ACCOUNTS'
+2021-03-13 13:42:05.950548 : 
+Execute:
+
+
+update DEMIPT.PVVL_META_LASTCDC 
+set last_update = coalesce(( select max( coalesce( update_dt, create_dt ) ) from DEMIPT.PVVL_STG_CLIENTS ), to_date( '1900-01-01', 'YYYY-MM-DD' ))
+where  dbname = 'DEMIPT' and table_name = 'PVVL_STG_CLIENTS'
+2021-03-13 13:42:05.952599 : 
+Execute:
+
+
+-- 7.  
+commit
+2021-03-13 13:42:05.959615 : -------------5 Построение отчета о мошшениках--------------
+2021-03-13 13:42:05.960319 : 
+Execute:
+
+-- 1.       .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT DISTINCT
+--    to_char(trans_date, 'YYYY.MM.DD HH24:MI:SS' ),
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '1' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_date > cl.passport_valid_to
+OR cl.PASSPORT_NUM in (select PASSPORT_NUM from DEMIPT.PVVL_DWH_FCT_PSSPRT_BLACKLIST)
+2021-03-13 13:42:06.091028 : 
+Execute:
+
+
+
+--2.     .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '2' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_date > ac.VALID_TO
+2021-03-13 13:42:06.116011 : 
+Execute:
+
+
+
+--3.         .
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '3' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_id in (
+    SELECT tr1.trans_id 
+    FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS  tr1 
+    INNER JOIN pvvl_dwh_dim_terminals_hist te1
+        ON te1.terminal_id = tr1.terminal AND tr1.trans_date between te1.effective_from AND te1.effective_to
+    INNER JOIN DEMIPT.PVVL_DWH_FCT_TRANSACTIONS  tr2
+        ON tr1.card_num = tr2.card_num AND ABS(tr1.trans_date - tr2.trans_date)*24 < 1
+     INNER JOIN pvvl_dwh_dim_terminals_hist te2
+        ON te2.terminal_id = tr2.terminal AND tr2.trans_date between te2.effective_from AND te2.effective_to
+    WHERE te1.terminal_city <> te2.terminal_city
+)
+2021-03-13 13:42:18.780277 : 
+Execute:
+
+
+
+
+
+
+--4.   .   20    3 
+INSERT INTO DEMIPT.PVVL_REP_FRAUD (EVENT_DT, PASSPORT, FIO, PHONE, EVENT_TYPE, REPORT_DT)
+SELECT 
+    tr.trans_date event_dt ,
+    cl.passport_num passport,
+    cl.last_name || ' ' ||  cl.first_name || ' ' || cl.patronymic fio,
+    cl.phone phone,
+    '4' event_type,
+    sysdate report_dt
+FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS tr
+INNER JOIN DEMIPT.PVVL_DWH_DIM_CARDS_HIST cd
+    ON tr.card_num = trim(cd.card_num) AND tr.trans_date between cd.effective_from AND cd.effective_to
+INNER JOIN PVVL_DWH_DIM_ACCOUNTS_HIST ac 
+    ON cd.account = ac.account AND tr.trans_date between ac.effective_from AND ac.effective_to
+INNER JOIN PVVL_DWH_DIM_CLIENTS_HIST cl
+    ON ac.client = cl.client_id AND tr.trans_date between cl.effective_from AND cl.effective_to
+WHERE tr.trans_id in (
+	SELECT t4 FROM    
+        (
+        SELECT 
+            oper_result r1,
+            lead(oper_result) over(PARTITION BY card_num ORDER BY trans_date) r2,
+            lead(oper_result,2) over(PARTITION BY card_num ORDER BY trans_date) r3,
+            lead(oper_result,3) over(PARTITION BY card_num ORDER BY trans_date) r4,
+            lead(trans_id,3) over(PARTITION BY card_num ORDER BY trans_date) t4,
+            trans_date d1,
+            lead(trans_date,3) over(PARTITION BY card_num ORDER BY trans_date) d4
+        FROM DEMIPT.PVVL_DWH_FCT_TRANSACTIONS
+        ) t
+	WHERE 1=1
+	    AND R1 = 'REJECT'
+	    AND R2 = 'REJECT'
+	    AND R3 = 'REJECT'
+	    AND R4 = 'SUCCESS'
+	    AND ABS(D4-D1)*24*60 < 20
+
+ )
+2021-03-13 13:42:19.038069 : --------------Закрытие соединения--------------
