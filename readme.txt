@@ -1,6 +1,7 @@
-﻿Выпускное задание для курса старт в Data Engineering
+Graduation assignment on Start to Data Engineering from MIPT 
 
-Показаны основные этапы построени DWH
-	- ETL процессы из различных источникво
+Basic DWH prototype:
+	- Some DDL from excel based metadata
+	- ETL from Oracle DB and Excel/CSV files
 	- staging таблицы
 	- type 1 и type 2 Slowly changing dimension
