@@ -1,4 +1,4 @@
-Graduation assignment on Start to Data Engineering from MIPT 
+Graduation assignment for Start to Data Engineering from MIPT 
 
 Basic DWH prototype:
 	- Some DDL from excel based metadata
